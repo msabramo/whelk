@@ -1,0 +1,193 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pretending python is a shell &mdash; whelk 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="whelk 1.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+    <li><a href="index.html">whelk 1.0 documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pretending-python-is-a-shell">
+<h1>Pretending python is a shell<a class="headerlink" href="#pretending-python-is-a-shell" title="Permalink to this headline">¶</a></h1>
+<p>We all like python for scripting, because it&#8217;s so much more powerful than a
+shell. But sometimes we really need to call a shell command because it&#8217;s so
+much easier than writing yet another library in python or adding a dependency:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">whelk</span> <span class="kn">import</span> <span class="n">shell</span>
+<span class="n">shell</span><span class="o">.</span><span class="n">zgrep</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;downloads&quot;</span><span class="p">,</span> <span class="s">&quot;/var/log/httpd&quot;</span><span class="p">)</span>
+<span class="c"># Here goes code to process the log</span>
+</pre></div>
+</div>
+<p>You can even pipe commands together:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">whelk</span> <span class="kn">import</span> <span class="n">pipe</span>
+<span class="n">pipe</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">getent</span><span class="p">(</span><span class="s">&quot;group&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">pipe</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="s">&quot;:1...:&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="section" id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
+<p>Installing the latest released version is as simple as:</p>
+<div class="highlight-python"><pre>pip install whelk</pre>
+</div>
+<p>This downloads it from PyPI and installs it for you. Alternatively, you can
+download the tarball manually from
+<a class="reference external" href="http://pypi.python.org/packages/source/w/whelk/">http://pypi.python.org/packages/source/w/whelk/</a>, extract it and run:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+<p>If you want to tinker with the source, you can install the latest source from
+github:</p>
+<div class="highlight-python"><pre>git clone https://github.com/seveas/whelk.git</pre>
+</div>
+</div>
+<div class="section" id="calling-a-command">
+<h2>Calling a command<a class="headerlink" href="#calling-a-command" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="xref py py-class docutils literal"><span class="pre">whelk.shell</span></tt> object can be used to call any command on your
+<tt class="xref py py-data docutils literal"><span class="pre">$PATH</span></tt> that is also a valid python identifier. Since many commands
+contain a &#8220;-&#8221;, it will find those even if you spell it with a &#8220;_&#8221;. So e.g.
+<tt class="file docutils literal"><span class="pre">run-parts</span></tt> can be found as <tt class="xref py py-func docutils literal"><span class="pre">shell.run_parts()</span></tt>.</p>
+<p>Attributes of the <tt class="xref py py-class docutils literal"><span class="pre">shell</span></tt> instance are all callables. Arguments to this
+callable get mapped to arguments to the command via a <tt class="xref py py-class docutils literal"><span class="pre">subprocess.Popen</span></tt>
+object. Keyword arguments get mapped to keyword arguments for the
+<tt class="xref py py-class docutils literal"><span class="pre">Popen</span></tt> object.</p>
+<p>One important difference is that <tt class="xref py py-data docutils literal"><span class="pre">stdin</span></tt>/<tt class="xref py py-data docutils literal"><span class="pre">stdout</span></tt>/<tt class="xref py py-data docutils literal"><span class="pre">stderr</span></tt>
+are set to <tt class="xref py py-data docutils literal"><span class="pre">whelk.PIPE</span></tt> by default. Input for the command can be passed
+as the <tt class="xref py py-data docutils literal"><span class="pre">input</span></tt> keyword parameter.</p>
+<p>Some examples:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s">&quot;Hello world!&quot;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">vipe</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s">&quot;Some data I want to edit in an editor&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Shell commands return a namedtuple <tt class="xref py py-data docutils literal"><span class="pre">(returncode,</span> <span class="pre">stdout,</span> <span class="pre">stderr)</span></tt>.</p>
+</div>
+<div class="section" id="piping-commands-together">
+<h2>Piping commands together<a class="headerlink" href="#piping-commands-together" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="xref py py-class docutils literal"><span class="pre">whelk.pipe</span></tt> object is similar to the <tt class="xref py py-class docutils literal"><span class="pre">shell</span></tt> object but has
+a few significant differences:</p>
+<ul class="simple">
+<li><tt class="xref py py-class docutils literal"><span class="pre">pipe</span></tt> commands can be chained with <tt class="xref py py-data docutils literal"><span class="pre">|</span></tt> (binary or), resembling
+a shell pipe. <tt class="xref py py-class docutils literal"><span class="pre">pipe</span></tt> takes care of the I/O redirecting.</li>
+<li>The command is not started immediately, but only when wrapping it in another
+<tt class="xref py py-func docutils literal"><span class="pre">pipe()</span></tt> call (yes, the object itself is callable), or chaining it to the
+next.</li>
+<li>In the result tuple, the returncode is actually a list of returncodes of all
+the processes in the pipe, in the order they are executed in.</li>
+<li>The only I/O redirection you may want to override is
+<tt class="xref py py-data docutils literal"><span class="pre">stderr=whelk.STDOUT</span></tt>, or <tt class="xref py py-data docutils literal"><span class="pre">stderr=open('/dev/null',</span> <span class="pre">'w')</span></tt> to
+redirect <tt class="xref py py-data docutils literal"><span class="pre">stderr</span></tt> of a process to <tt class="xref py py-data docutils literal"><span class="pre">stdin</span></tt> of the next process, or
+<tt class="file docutils literal"><span class="pre">/dev/null</span></tt> respectively.</li>
+</ul>
+<p>Some examples:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">dmesg</span><span class="p">()</span> <span class="o">|</span> <span class="n">pipe</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="s">&#39;Bluetooth&#39;</span><span class="p">))</span>
+
+<span class="n">cow</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;/usr/share/cowsay/cows&#39;</span><span class="p">))</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">fortune</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">pipe</span><span class="o">.</span><span class="n">cowsay</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="n">cow</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-compatibility">
+<h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Permalink to this headline">¶</a></h2>
+<p>Whelk is compatible with python 2.4 and up, including python 3. If you find an
+incompatibility, please report a bug at <a class="reference external" href="https://githiub.com/seveas/whelk">https://githiub.com/seveas/whelk</a>.</p>
+<p>Note that on python 3, subprocesses require <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as input and
+will return <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as output.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Pretending python is a shell</a><ul>
+<li><a class="reference internal" href="#installing">Installing</a></li>
+<li><a class="reference internal" href="#calling-a-command">Calling a command</a></li>
+<li><a class="reference internal" href="#piping-commands-together">Piping commands together</a></li>
+<li><a class="reference internal" href="#python-compatibility">Python compatibility</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+    <li><a href="index.html">whelk 1.0 documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010-2012, Dennis Kaarsemaker.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
