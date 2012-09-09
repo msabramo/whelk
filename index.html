@@ -133,7 +133,11 @@ redirect <tt class="xref py py-data docutils literal"><span class="pre">stderr</
 <p>Whelk is compatible with python 2.4 and up, including python 3. If you find an
 incompatibility, please report a bug at <a class="reference external" href="https://github.com/seveas/whelk">https://github.com/seveas/whelk</a>.</p>
 <p>Note that on python 3, subprocesses require <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as input and
-will return <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as output.</p>
+will return <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as output. You can specify an encoding for a
+command to make whelk do the encoding/decoding for you:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">kernel_says</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">dmesg</span><span class="p">(</span><span class="s">&#39;-t&#39;</span><span class="p">,</span> <span class="n">charset</span><span class="o">=</span><span class="s">&#39;latin-1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 
