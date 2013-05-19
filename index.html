@@ -9,7 +9,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pretending python is a shell &mdash; whelk 1.3 documentation</title>
+    <title>Pretending python is a shell &mdash; whelk 1.5 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -18,7 +18,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.3',
+        VERSION:     '1.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
-    <link rel="top" title="whelk 1.3 documentation" href="#" /> 
+    <link rel="top" title="whelk 1.5 documentation" href="#" /> 
   </head>
   <body>
     <div class="relbar-top">
@@ -40,7 +40,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-    <li><a href="#">whelk 1.3 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 1.5 documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -104,12 +104,15 @@ as the <tt class="xref py py-data docutils literal"><span class="pre">input</spa
 <p>Another difference is the <tt class="xref py py-data docutils literal"><span class="pre">output_callback</span></tt> argument, which allows you to
 process output as soon as it arrives. Whenever output arrives, this callback
 will be called with as arguments the subprocess, the filedescriptor the data
-came in on, the actual data and any (keyword) arguments you passed as
-<tt class="xref py py-data docutils literal"><span class="pre">output_callback_args</span></tt> and/or <tt class="xref py py-data docutils literal"><span class="pre">output_callback_kwargs</span></tt> to the
-command. Here&#8217;s an example that uses this feature for logging:</p>
+came in on, the actual data (or <tt class="xref py py-data docutils literal"><span class="pre">None</span></tt> in case of EOF) and any (keyword)
+arguments you passed as <tt class="xref py py-data docutils literal"><span class="pre">output_callback_args</span></tt> and/or
+<tt class="xref py py-data docutils literal"><span class="pre">output_callback_kwargs</span></tt> to the command. Here&#8217;s an example that uses this
+feature for logging:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&gt; File descriptor closed&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="o">.</span><span class="n">fileno</span><span class="p">()))</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="o">.</span><span class="n">fileno</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">line</span><span class="p">))</span>
 
 <span class="n">shell</span><span class="o">.</span><span class="n">dmesg</span><span class="p">(</span><span class="n">output_callback</span><span class="o">=</span><span class="n">cb</span><span class="p">)</span>
 </pre></div>
@@ -138,6 +141,21 @@ redirect <tt class="xref py py-data docutils literal"><span class="pre">stderr</
 
 <span class="n">cow</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;/usr/share/cowsay/cows&#39;</span><span class="p">))</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">fortune</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">pipe</span><span class="o">.</span><span class="n">cowsay</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="n">cow</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-default-arguments">
+<h2>Setting default arguments<a class="headerlink" href="#setting-default-arguments" title="Permalink to this headline">¶</a></h2>
+<p>If you want to launch many commands with the same parameters, you can set
+defaults by passing parameters to the <tt class="xref py py-class docutils literal"><span class="pre">Shell</span></tt> constructor. These are
+passed on to all commands launched by that shell, unless overridden in specific
+calls:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">whelk</span> <span class="kn">import</span> <span class="n">Shell</span>
+<span class="n">my_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">my_env</span><span class="p">[</span><span class="s">&#39;http_proxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;http://webproxy.corp:3128&#39;</span>
+<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="n">stderr</span><span class="o">=</span><span class="n">Shell</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">my_env</span><span class="p">)</span>
+
+<span class="n">shell</span><span class="o">.</span><span class="n">wget</span><span class="p">(</span><span class="s">&quot;http://google.com&quot;</span><span class="p">,</span> <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;google.html&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -172,6 +190,7 @@ command to make whelk do the encoding/decoding for you:</p>
 <li><a class="reference internal" href="#installing">Installing</a></li>
 <li><a class="reference internal" href="#calling-a-command">Calling a command</a></li>
 <li><a class="reference internal" href="#piping-commands-together">Piping commands together</a></li>
+<li><a class="reference internal" href="#setting-default-arguments">Setting default arguments</a></li>
 <li><a class="reference internal" href="#python-compatibility">Python compatibility</a></li>
 </ul>
 </li>
@@ -202,7 +221,7 @@ command to make whelk do the encoding/decoding for you:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-    <li><a href="#">whelk 1.3 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 1.5 documentation</a> &raquo;</li>
  
       </ul>
     </div>
