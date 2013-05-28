@@ -9,7 +9,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pretending python is a shell &mdash; whelk 1.5 documentation</title>
+    <title>Pretending python is a shell &mdash; whelk 1.6 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -18,7 +18,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.5',
+        VERSION:     '1.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
-    <link rel="top" title="whelk 1.5 documentation" href="#" /> 
+    <link rel="top" title="whelk 1.6 documentation" href="#" /> 
   </head>
   <body>
     <div class="relbar-top">
@@ -40,7 +40,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-    <li><a href="#">whelk 1.5 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 1.6 documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -88,36 +88,71 @@ github:</p>
 <tt class="xref py py-data docutils literal"><span class="pre">$PATH</span></tt> that is also a valid python identifier. Since many commands
 contain a &#8220;-&#8221;, it will find those even if you spell it with a &#8220;_&#8221;. So e.g.
 <tt class="file docutils literal"><span class="pre">run-parts</span></tt> can be found as <tt class="xref py py-func docutils literal"><span class="pre">shell.run_parts()</span></tt>.</p>
+<p>If your command is not valid as a python identifier, even after substituting
+dashes for underscores, you can using the <tt class="xref py py-class docutils literal"><span class="pre">shell</span></tt> object as a dict. This
+dict also accepts full paths to commands, even if they are not on your
+<tt class="xref py py-data docutils literal"><span class="pre">$PATH</span></tt>.</p>
 <p>Attributes of the <tt class="xref py py-class docutils literal"><span class="pre">shell</span></tt> instance are all callables. Arguments to this
 callable get mapped to arguments to the command via a <tt class="xref py py-class docutils literal"><span class="pre">subprocess.Popen</span></tt>
 object. Keyword arguments get mapped to keyword arguments for the
-<tt class="xref py py-class docutils literal"><span class="pre">Popen</span></tt> object.</p>
-<p>One important difference is that <tt class="xref py py-data docutils literal"><span class="pre">stdin</span></tt>/<tt class="xref py py-data docutils literal"><span class="pre">stdout</span></tt>/<tt class="xref py py-data docutils literal"><span class="pre">stderr</span></tt>
-are set to <tt class="xref py py-data docutils literal"><span class="pre">whelk.PIPE</span></tt> by default. Input for the command can be passed
-as the <tt class="xref py py-data docutils literal"><span class="pre">input</span></tt> keyword parameter.</p>
+<tt class="xref py py-class docutils literal"><span class="pre">Popen</span></tt> object.  Shell commands return a namedtuple <tt class="xref py py-data docutils literal"><span class="pre">(returncode,</span>
+<span class="pre">stdout,</span> <span class="pre">stderr)</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">netstat</span><span class="p">(</span><span class="s">&#39;-tlpn&#39;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">git</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="s">&#39;/home/dennis/code/whelk&#39;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="p">[</span><span class="s">&#39;2to3&#39;</span><span class="p">](</span><span class="s">&#39;awesome.py&#39;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="p">[</span><span class="s">&#39;./Configure&#39;</span><span class="p">](</span><span class="s">&#39;-des&#39;</span><span class="p">,</span> <span class="s">&#39;-Dusedevel&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition to the <tt class="xref py py-class docutils literal"><span class="pre">subprocess.Popen</span></tt> arguments, whelk supports a few
+more keyword arguments:</p>
+<ul>
+<li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">input</span></tt></p>
+<p>Contrary to the <tt class="xref py py-mod docutils literal"><span class="pre">subprocess</span></tt> defaults, <tt class="xref py py-data docutils literal"><span class="pre">stdin</span></tt>, <tt class="xref py py-data docutils literal"><span class="pre">stdout</span></tt>
+and <tt class="xref py py-data docutils literal"><span class="pre">stderr</span></tt> are set to <tt class="xref py py-data docutils literal"><span class="pre">whelk.PIPE</span></tt> by default. Input for the
+command can be passed as the <tt class="xref py py-data docutils literal"><span class="pre">input</span></tt> keyword parameter.</p>
 <p>Some examples:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s">&quot;Hello world!&quot;</span><span class="p">)</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">vipe</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s">&quot;Some data I want to edit in an editor&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Another difference is the <tt class="xref py py-data docutils literal"><span class="pre">output_callback</span></tt> argument, which allows you to
-process output as soon as it arrives. Whenever output arrives, this callback
-will be called with as arguments the subprocess, the filedescriptor the data
-came in on, the actual data (or <tt class="xref py py-data docutils literal"><span class="pre">None</span></tt> in case of EOF) and any (keyword)
-arguments you passed as <tt class="xref py py-data docutils literal"><span class="pre">output_callback_args</span></tt> and/or
-<tt class="xref py py-data docutils literal"><span class="pre">output_callback_kwargs</span></tt> to the command. Here&#8217;s an example that uses this
-feature for logging:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</li>
+<li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">output_callback</span></tt></p>
+<p>To process output as soon as it arrives, specify a callback to use. Whenever
+output arrives, this callback will be called with as arguments the shell
+instance, the subprocess, the filedescriptor the data came in on, the actual
+data (or <tt class="xref py py-data docutils literal"><span class="pre">None</span></tt> in case of EOF) and any user-specified arguments .
+Here&#8217;s an example that uses this feature for logging:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="n">shell</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&gt; File descriptor closed&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="o">.</span><span class="n">fileno</span><span class="p">()))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&gt; File descriptor closed&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">extra</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">line</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">extra</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
 
 <span class="n">shell</span><span class="o">.</span><span class="n">dmesg</span><span class="p">(</span><span class="n">output_callback</span><span class="o">=</span><span class="n">cb</span><span class="p">)</span>
+<span class="n">shell</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="n">output_callback</span><span class="o">=</span><span class="p">[</span><span class="n">cb</span><span class="p">,</span> <span class="s">&quot;Mountpoints: &quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Shell commands return a namedtuple <tt class="xref py py-data docutils literal"><span class="pre">(returncode,</span> <span class="pre">stdout,</span> <span class="pre">stderr)</span></tt>.</p>
+</li>
+<li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">raise_on_error</span></tt></p>
+<p>This makes your shell even more pythonic: instead of returning an errorcode,
+a <tt class="xref py py-class docutils literal"><span class="pre">CommandFailed</span></tt> exception is raised whenever a command returns with
+a nonzero exitcode.</p>
+</li>
+<li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">exit_callback</span></tt></p>
+<p>If you want slightly more fine-grained control than <tt class="xref py py-data docutils literal"><span class="pre">raise_on_error</span></tt>,
+you can use this argument to specify a callable to call whenever a process
+exits, irrespective of the returncode. The callback will be called with as
+arguments the shell instance, the subprocess, the result tuple and any
+user-provided arguments.</p>
+<p>Both <tt class="xref py py-data docutils literal"><span class="pre">raise_on_exit</span></tt> and <tt class="xref py py-data docutils literal"><span class="pre">exit_callback</span></tt> are ost useful when set
+as a default of a <tt class="xref py py-class docutils literal"><span class="pre">Shell</span></tt> instance, they are not really needed when
+calling single commands.</p>
+</li>
+</ul>
 </div>
 <div class="section" id="piping-commands-together">
 <h2>Piping commands together<a class="headerlink" href="#piping-commands-together" title="Permalink to this headline">¶</a></h2>
@@ -221,7 +256,7 @@ command to make whelk do the encoding/decoding for you:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-    <li><a href="#">whelk 1.5 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 1.6 documentation</a> &raquo;</li>
  
       </ul>
     </div>
