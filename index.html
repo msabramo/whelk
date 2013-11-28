@@ -9,7 +9,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pretending python is a shell &mdash; whelk 1.10 documentation</title>
+    <title>Pretending python is a shell &mdash; whelk 1.11 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -18,7 +18,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.10',
+        VERSION:     '1.11',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
-    <link rel="top" title="whelk 1.10 documentation" href="#" /> 
+    <link rel="top" title="whelk 1.11 documentation" href="#" /> 
   </head>
   <body>
     <div class="relbar-top">
@@ -40,7 +40,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-    <li><a href="#">whelk 1.10 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 1.11 documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -146,11 +146,16 @@ a nonzero exitcode.</p>
 <p>If you want slightly more fine-grained control than <tt class="xref py py-data docutils literal"><span class="pre">raise_on_error</span></tt>,
 you can use this argument to specify a callable to call whenever a process
 exits, irrespective of the returncode. The callback will be called with as
-arguments the shell instance, the subprocess, the result tuple and any
+arguments the command instance, the subprocess, the result tuple and any
 user-provided arguments.</p>
-<p>Both <tt class="xref py py-data docutils literal"><span class="pre">raise_on_exit</span></tt> and <tt class="xref py py-data docutils literal"><span class="pre">exit_callback</span></tt> are ost useful when set
+<p>Both <tt class="xref py py-data docutils literal"><span class="pre">raise_on_exit</span></tt> and <tt class="xref py py-data docutils literal"><span class="pre">exit_callback</span></tt> are most useful when set
 as a default of a <tt class="xref py py-class docutils literal"><span class="pre">Shell</span></tt> instance, they are not really needed when
 calling single commands.</p>
+</li>
+<li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">run_callback</span></tt></p>
+<p>A function that will be called whenever the shell instance is about to create
+a new process. The callback will be called with as arguments  the command
+instance and any user-provided arguments.</p>
 </li>
 </ul>
 </div>
@@ -256,7 +261,7 @@ command to make whelk do the encoding/decoding for you:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-    <li><a href="#">whelk 1.10 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 1.11 documentation</a> &raquo;</li>
  
       </ul>
     </div>
