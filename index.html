@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,16 +8,16 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pretending python is a shell &mdash; whelk 2.1 documentation</title>
+    <title>Pretending python is a shell &mdash; whelk 2.2 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '2.1',
+        URL_ROOT:    './',
+        VERSION:     '2.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,9 +26,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
-    <link rel="top" title="whelk 2.1 documentation" href="#" /> 
+    <link rel="top" title="whelk 2.2 documentation" href="#" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
@@ -41,7 +39,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-    <li><a href="#">whelk 2.1 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 2.2 documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -71,16 +69,19 @@ much easier than writing yet another library in python or adding a dependency:</
 <div class="section" id="installing">
 <h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
 <p>Installing the latest released version is as simple as:</p>
-<div class="highlight-python"><pre>pip install whelk</pre>
+<div class="highlight-python"><div class="highlight"><pre>pip install whelk
+</pre></div>
 </div>
 <p>If you want to tinker with the source, you can install the latest source from
 github:</p>
-<div class="highlight-python"><pre>git clone https://github.com/seveas/whelk.git</pre>
+<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/seveas/whelk.git
+</pre></div>
 </div>
 <p>And finally, Ubuntu users can install whelk from my ppa:</p>
-<div class="highlight-python"><pre>sudo apt-add-repository ppa:dennis/python
+<div class="highlight-python"><div class="highlight"><pre>sudo apt-add-repository ppa:dennis/python
 sudo apt-get update
-sudo apt-get install python-whelk python3-whelk</pre>
+sudo apt-get install python-whelk python3-whelk
+</pre></div>
 </div>
 </div>
 <div class="section" id="calling-a-command">
@@ -96,17 +97,35 @@ dict also accepts full paths to commands, even if they are not on your
 <p>Attributes of the <tt class="xref py py-class docutils literal"><span class="pre">shell</span></tt> instance are all callables. Arguments to this
 callable get mapped to arguments to the command via a <tt class="xref py py-class docutils literal"><span class="pre">subprocess.Popen</span></tt>
 object. Keyword arguments get mapped to keyword arguments for the
-<tt class="xref py py-class docutils literal"><span class="pre">Popen</span></tt> object.  Shell commands return a namedtuple <tt class="xref py py-data docutils literal"><span class="pre">(returncode,</span>
-<span class="pre">stdout,</span> <span class="pre">stderr)</span></tt>:</p>
+<tt class="xref py py-class docutils literal"><span class="pre">Popen</span></tt> object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">netstat</span><span class="p">(</span><span class="s">&#39;-tlpn&#39;</span><span class="p">)</span>
-
 <span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">git</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="s">&#39;/home/dennis/code/whelk&#39;</span><span class="p">)</span>
-
 <span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="p">[</span><span class="s">&#39;2to3&#39;</span><span class="p">](</span><span class="s">&#39;awesome.py&#39;</span><span class="p">)</span>
-
 <span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="p">[</span><span class="s">&#39;./Configure&#39;</span><span class="p">](</span><span class="s">&#39;-des&#39;</span><span class="p">,</span> <span class="s">&#39;-Dusedevel&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Oh, and on windows you can leave out the <tt class="xref py py-data docutils literal"><span class="pre">exe</span></tt> suffix, like you would on
+the command line as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">nmake</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Shell commands return a namedtuple <tt class="xref py py-data docutils literal"><span class="pre">(returncode,</span> <span class="pre">stdout,</span> <span class="pre">stderr)</span></tt> These
+result objects can also be used as booleans. As in shellscript, a non-zero
+returncode is consifered <tt class="xref py py-data docutils literal"><span class="pre">False</span></tt> and a returncode of zero is considered
+<tt class="xref py py-data docutils literal"><span class="pre">True</span></tt>, so this simply works:</p>
+<div class="highlight-python"><div class="highlight"><pre>result = shell.make(&#39;test&#39;):
+if not result:
+    print(&quot;You broke the build!&quot;)
+    print(result.stderr)
+</pre></div>
+</div>
+<p>The result of <tt class="xref py py-data docutils literal"><span class="pre">pipe(...)</span></tt> is slightly different: instead of a single return
+code, it actually will give you a list of returncodes of all items in the
+pipeline. Result objects like this are only considered <tt class="xref py py-data docutils literal"><span class="pre">True</span></tt> if all
+elements are zero.</p>
+</div>
+<div class="section" id="keyword-arguments">
+<h2>Keyword arguments<a class="headerlink" href="#keyword-arguments" title="Permalink to this headline">¶</a></h2>
 <p>In addition to the <tt class="xref py py-class docutils literal"><span class="pre">subprocess.Popen</span></tt> arguments, whelk supports a few
 more keyword arguments:</p>
 <ul>
@@ -142,6 +161,10 @@ Here&#8217;s an example that uses this feature for logging:</p>
 <p>This makes your shell even more pythonic: instead of returning an errorcode,
 a <tt class="xref py py-class docutils literal"><span class="pre">CommandFailed</span></tt> exception is raised whenever a command returns with
 a nonzero exitcode.</p>
+<p>The reason this is not the default, is that for quite a few commands a
+non-zero exitcode, does not indicate an error at all. For example, the
+venerable <tt class="xref py py-data docutils literal"><span class="pre">diff</span></tt> command returns 1 if there is a change and 0 if there
+is none.</p>
 </li>
 <li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">exit_callback</span></tt></p>
 <p>If you want slightly more fine-grained control than <tt class="xref py py-data docutils literal"><span class="pre">raise_on_error</span></tt>,
@@ -152,11 +175,46 @@ user-provided arguments.</p>
 <p>Both <tt class="xref py py-data docutils literal"><span class="pre">raise_on_exit</span></tt> and <tt class="xref py py-data docutils literal"><span class="pre">exit_callback</span></tt> are most useful when set
 as a default of a <tt class="xref py py-class docutils literal"><span class="pre">Shell</span></tt> instance, they are not really needed when
 calling single commands.</p>
+<p>Here&#8217;s a real life example of an exit callback, which will retry git
+operations when the break due to repository locks:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">check_sp</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">res</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&#39;index.lock&#39;</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span>
+            <span class="c"># Let&#39;s retry</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">command</span><span class="p">(</span><span class="o">*</span><span class="n">command</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">command</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> failed: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">args</span><span class="p">),</span> <span class="n">res</span><span class="o">.</span><span class="n">stderr</span><span class="p">))</span>
+
+<span class="n">git</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="n">exit_callback</span><span class="o">=</span><span class="n">check_lock</span><span class="p">)</span><span class="o">.</span><span class="n">git</span>
+<span class="n">git</span><span class="o">.</span><span class="n">checkout</span><span class="p">(</span><span class="s">&#39;master&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </li>
 <li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">run_callback</span></tt></p>
 <p>A function that will be called whenever the shell instance is about to create
 a new process. The callback will be called with as arguments  the command
-instance and any user-provided arguments.</p>
+instance and any user-provided arguments. Here&#8217;s an example that logs all
+starts of applications:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">runlogger</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">cmd</span><span class="o">.</span><span class="n">sp_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;env&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">env</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">env</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">env</span> <span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">None</span><span class="p">)]</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> &#39;</span> <span class="o">%</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Running </span><span class="si">%s%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span>
+
+<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="n">run_callback</span><span class="o">=</span><span class="n">runlogger</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><tt class="xref py py-data docutils literal"><span class="pre">encoding</span></tt></p>
+<p>On python 3, subprocesses require <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as input and will
+return <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as output. You can specify an encoding for a
+command to make whelk do the encoding/decoding for you:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">kernel_says</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">dmesg</span><span class="p">(</span><span class="s">&#39;-t&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;latin-1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On python 2, this keyword is ignored ans whelk will leave your data alone.</p>
 </li>
 </ul>
 </div>
@@ -194,7 +252,7 @@ calls:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">whelk</span> <span class="kn">import</span> <span class="n">Shell</span>
 <span class="n">my_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">my_env</span><span class="p">[</span><span class="s">&#39;http_proxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;http://webproxy.corp:3128&#39;</span>
-<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="n">stderr</span><span class="o">=</span><span class="n">Shell</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">my_env</span><span class="p">)</span>
+<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="n">stderr</span><span class="o">=</span><span class="n">Shell</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">my_env</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
 
 <span class="n">shell</span><span class="o">.</span><span class="n">wget</span><span class="p">(</span><span class="s">&quot;http://google.com&quot;</span><span class="p">,</span> <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;google.html&quot;</span><span class="p">)</span>
 </pre></div>
@@ -204,18 +262,6 @@ calls:</p>
 <h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Permalink to this headline">¶</a></h2>
 <p>Whelk is compatible with python 2.4 and up, including python 3. If you find an
 incompatibility, please report a bug at <a class="reference external" href="https://github.com/seveas/whelk">https://github.com/seveas/whelk</a>.</p>
-<p>Note that on python 3, subprocesses require <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as input and
-will return <tt class="xref py py-class docutils literal"><span class="pre">bytes</span></tt> objects as output. You can specify an encoding for a
-command to make whelk do the encoding/decoding for you:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">kernel_says</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">dmesg</span><span class="p">(</span><span class="s">&#39;-t&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;latin-1&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>You can also make all commands launched by a Shell instance do this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">whelk</span> <span class="kn">import</span> <span class="n">Shell</span>
-<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="n">kernel_says</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">dmesg</span><span class="p">(</span><span class="s">&#39;-t&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 </div>
 </div>
 
@@ -224,13 +270,13 @@ command to make whelk do the encoding/decoding for you:</p>
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <div class="sphinxlocaltoc">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
+        <div class="sphinxsidebarwrapper"><div class="sphinxlocaltoc">
+    <h3><a href="#">Page contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Pretending python is a shell</a><ul>
 <li><a class="reference internal" href="#installing">Installing</a></li>
 <li><a class="reference internal" href="#calling-a-command">Calling a command</a></li>
+<li><a class="reference internal" href="#keyword-arguments">Keyword arguments</a></li>
 <li><a class="reference internal" href="#piping-commands-together">Piping commands together</a></li>
 <li><a class="reference internal" href="#setting-default-arguments">Setting default arguments</a></li>
 <li><a class="reference internal" href="#python-compatibility">Python compatibility</a></li>
@@ -264,7 +310,7 @@ command to make whelk do the encoding/decoding for you:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-    <li><a href="#">whelk 2.1 documentation</a> &raquo;</li>
+    <li><a href="#">whelk 2.2 documentation</a> &raquo;</li>
  
       </ul>
     </div>
