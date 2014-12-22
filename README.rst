@@ -3,18 +3,22 @@ Pretending python is a shell
 
 We all like python for scripting, because it's so much more powerful than a
 shell. But sometimes we really need to call a shell command because it's so
-much easier than writing yet another library in python or adding a dependency::
+much easier than writing yet another library in python or adding a dependency:
+
+.. code-block:: python
 
   from whelk import shell
   shell.zgrep("-r", "downloads", "/var/log/httpd")
   # Here goes code to process the log
 
-You can even pipe commands together::
+You can even pipe commands together:
+
+.. code-block:: python
 
   from whelk import pipe
   pipe(pipe.getent("group") | pipe.grep(":1...:"))
 
-Much more usage info can de found at http://seveas.github.io/whelk/
+Much more usage info can be found at http://seveas.github.io/whelk/
 
 Installing
 ----------
